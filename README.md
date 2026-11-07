@@ -16,5 +16,5 @@ over WebDriver BiDi.
 
 **Read it here: https://getsteero.github.io/steero-course/**
 
-This repository holds only the built HTML of the course (on the `gh-pages` branch).
+This repository is the built, static HTML of the course, served by GitHub Pages from `main`.
 It contains no library source code. Code appears inline in the lessons.
