@@ -1151,7 +1151,7 @@
 
 <!-- STATUS: written, owner: writer C -->
 <h1 id="10-debugging">10. Debugging<a class="headerlink" href="#10-debugging" title="Permanent link">&para;</a></h1>
-<!-- Author: Pandiyaraj Karuppasamy | Date: Nov-07-2026 | Modified: Nov-07-2026 (launch slow_mo) -->
+<!-- Author: Pandiyaraj Karuppasamy | Date: Nov-07-2026 | Modified: Nov-07-2026 (launch slow_mo); Nov-07-2026 (Chrome video from the CDP screencast) -->
 
 <div class="admonition abstract">
 <p class="admonition-title">In this lesson</p>
@@ -1329,8 +1329,9 @@ wait until the recording is finished, so call them after <code>page.close()</cod
 <p>The two browsers record video differently, and the file you get can differ:</p>
 <ul>
 <li><strong>Firefox</strong> records the page itself (a BiDi screencast) and writes a <code>.webm</code>.</li>
-<li><strong>Chrome</strong> has no screencast over BiDi yet, so steero takes screenshots, five a second,
-  and encodes them with <strong>ffmpeg</strong> when ffmpeg is on your <code>PATH</code>, giving a <code>.webm</code>.
+<li><strong>Chrome</strong> has no screencast over BiDi yet, so steero collects a frame each time the page
+  repaints (CDP <code>Page.startScreencast</code>; every page, the ones behind another tab too) and
+  encodes them with <strong>ffmpeg</strong> when ffmpeg is on your <code>PATH</code>, giving a <code>.webm</code>.
   Without ffmpeg the video is saved as <code>&lt;id&gt;.frames.zip</code>, a set of frames that
   <code>steero show-trace</code> plays, and steero logs one warning.</li>
 </ul>

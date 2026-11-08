@@ -1107,7 +1107,7 @@
 
 <!-- STATUS: written, owner: writer D -->
 <h1 id="15-migrating-from-playwright">15. Migrating from Playwright<a class="headerlink" href="#15-migrating-from-playwright" title="Permanent link">&para;</a></h1>
-<!-- Author: Pandiyaraj Karuppasamy | Date: Nov-07-2026 | Modified: Nov-07-2026 (library fixes from the course bug list) -->
+<!-- Author: Pandiyaraj Karuppasamy | Date: Nov-07-2026 | Modified: Nov-07-2026 (library fixes from the course bug list); Nov-07-2026 (JS and element handles are supported) -->
 
 <div class="admonition abstract">
 <p class="admonition-title">In this lesson</p>
@@ -1172,8 +1172,8 @@ at a time.</p>
 <td>builds a locator for the first match and acts on it</td>
 </tr>
 <tr>
-<td>element handles (<code>query_selector</code>, <code>element_handle()</code>)</td>
-<td>locators, which find the element again on each use</td>
+<td><code>evaluate_handle</code>, <code>query_selector</code>, <code>element_handle()</code>, <code>JSHandle</code>, <code>ElementHandle</code></td>
+<td>steero's JS and element handles (Handles guide)</td>
 </tr>
 <tr>
 <td><code>route.fulfill(json=...)</code>, <code>route.abort()</code>, handlers taking <code>(route)</code> or <code>(route, request)</code></td>
@@ -1197,17 +1197,17 @@ at a time.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">steero.compat.playwright</span><span class="w"> </span><span class="kn">import</span> <span class="n">UnsupportedFeature</span>
 
 <span class="k">try</span><span class="p">:</span>
-    <span class="n">page</span><span class="o">.</span><span class="n">evaluate_handle</span><span class="p">(</span><span class="s2">"document.body"</span><span class="p">)</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">chromium</span><span class="o">.</span><span class="n">launch_persistent_context</span><span class="p">(</span><span class="s2">"profile"</span><span class="p">)</span>
 <span class="k">except</span> <span class="n">UnsupportedFeature</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">error</span><span class="o">.</span><span class="n">feature</span><span class="p">)</span>   <span class="c1"># Page.evaluate_handle</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">error</span><span class="o">.</span><span class="n">feature</span><span class="p">)</span>   <span class="c1"># BrowserType.launch_persistent_context</span>
 </code></pre></div>
 <p>The main ones: WebKit, <code>launch_persistent_context</code> (steero always starts from a fresh profile),
-<code>connect</code> and <code>connect_over_cdp</code>, JS handles (<code>evaluate_handle</code>, <code>JSHandle</code>), <code>route(times=)</code>,
+<code>connect</code> and <code>connect_over_cdp</code>, <code>route(times=)</code>,
 <code>goto(referer=)</code>, and a few launch options (<code>env=</code>, <code>ignore_default_args=</code>, <code>downloads_path=</code>).
 An argument steero lacks is dropped silently only when it holds Playwright's do-nothing value
 (<code>None</code>, <code>False</code>, <code>0</code>); any other value raises, so <code>click(trial=True)</code> never quietly clicks.
 <code>UnsupportedFeature</code> is a <code>NotImplementedError</code>; for a missing attribute it is also an
-<code>AttributeError</code>, so <code>hasattr(page, "evaluate_handle")</code> keeps working.</p>
+<code>AttributeError</code>, so <code>hasattr(page, "request_gc")</code> keeps working.</p>
 <div class="admonition note">
 <p class="admonition-title">Browser support</p>
 <p>The layer runs on everything steero drives: Chrome (both backends), Edge and Firefox. A
@@ -1352,7 +1352,7 @@ move. Move to native steero for new code, and for anything that should use self-
 the Chrome extras.</p>
 <p>Choose steero when you need the <strong>stock</strong> browsers your users run (especially Firefox, which
 Playwright patches), the W3C standard protocol, or the built-in healing and MCP server. Stay with
-Playwright when you need WebKit, JS and element handles, persistent profiles, clients in other
+Playwright when you need WebKit, persistent profiles, clients in other
 languages, or the maturity of a tool with years of use and a large team behind it. The
 comparison page says more.</p>
 <h2 id="worked-example">Worked example<a class="headerlink" href="#worked-example" title="Permanent link">&para;</a></h2>
@@ -1550,35 +1550,40 @@ browser. <code>timeout=5000</code> is still five seconds, because this is the co
 </details>
 <h3 id="exercise-2-the-one-call-that-cannot-move">Exercise 2: the one call that cannot move<a class="headerlink" href="#exercise-2-the-one-call-that-cannot-move" title="Permanent link">&para;</a></h3>
 <p>This ported script stops with <code>UnsupportedFeature</code>. Find the call, read what the error names, and
-replace it with something steero supports.</p>
-<div class="highlight"><pre><span></span><code><span class="n">page</span><span class="o">.</span><span class="n">goto</span><span class="p">(</span><span class="s2">"http://127.0.0.1:8765/login.html"</span><span class="p">)</span>
-<span class="n">page</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="s2">"#username"</span><span class="p">,</span> <span class="s2">"ada"</span><span class="p">)</span>
-<span class="n">page</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="s2">"#password"</span><span class="p">,</span> <span class="s2">"lovelace"</span><span class="p">)</span>
-<span class="n">page</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s2">"#sign-in"</span><span class="p">)</span>
-<span class="n">expect</span><span class="p">(</span><span class="n">page</span><span class="o">.</span><span class="n">locator</span><span class="p">(</span><span class="s2">"#status"</span><span class="p">))</span><span class="o">.</span><span class="n">to_have_text</span><span class="p">(</span><span class="s2">"Welcome, ada"</span><span class="p">)</span>
-<span class="n">handle</span> <span class="o">=</span> <span class="n">page</span><span class="o">.</span><span class="n">evaluate_handle</span><span class="p">(</span><span class="s2">"document.getElementById('status')"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">handle</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="s2">"el =&gt; el.textContent"</span><span class="p">))</span>
+replace it with something steero supports. The script mocks the products API for the first reload
+only; the second reload should show the real products again.</p>
+<div class="highlight"><pre><span></span><code><span class="n">page</span><span class="o">.</span><span class="n">goto</span><span class="p">(</span><span class="s2">"http://127.0.0.1:8765/products.html"</span><span class="p">)</span>
+<span class="n">expect</span><span class="p">(</span><span class="n">page</span><span class="o">.</span><span class="n">get_by_role</span><span class="p">(</span><span class="s2">"status"</span><span class="p">))</span><span class="o">.</span><span class="n">to_have_text</span><span class="p">(</span><span class="s2">"3 products"</span><span class="p">)</span>
+<span class="n">page</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">"**/api/products"</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">route</span><span class="p">:</span> <span class="n">route</span><span class="o">.</span><span class="n">fulfill</span><span class="p">(</span><span class="n">json</span><span class="o">=</span><span class="n">MOCKED</span><span class="p">),</span> <span class="n">times</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">page</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s2">"#reload"</span><span class="p">)</span>
+<span class="n">expect</span><span class="p">(</span><span class="n">page</span><span class="o">.</span><span class="n">get_by_role</span><span class="p">(</span><span class="s2">"status"</span><span class="p">))</span><span class="o">.</span><span class="n">to_have_text</span><span class="p">(</span><span class="s2">"1 products"</span><span class="p">)</span>
+<span class="n">page</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s2">"#reload"</span><span class="p">)</span>
+<span class="n">expect</span><span class="p">(</span><span class="n">page</span><span class="o">.</span><span class="n">get_by_role</span><span class="p">(</span><span class="s2">"status"</span><span class="p">))</span><span class="o">.</span><span class="n">to_have_text</span><span class="p">(</span><span class="s2">"3 products"</span><span class="p">)</span>
 </code></pre></div>
 <details class="success">
 <summary>Solution</summary>
 <div class="highlight"><pre><span></span><code><span class="sd">"""Lesson 15, exercise 2: find the call that raises UnsupportedFeature, and replace it.</span>
 
-<span class="sd">The ported script used ``page.evaluate_handle()`` to get a JS handle to the status line and</span>
-<span class="sd">read its text. steero has no JS handles, so the layer raises ``UnsupportedFeature`` naming</span>
-<span class="sd">the method. The script shows that error once, then does the same job with a locator.</span>
+<span class="sd">The ported script mocked the products API for one request only, with</span>
+<span class="sd">``page.route(url, handler, times=1)``. steero's routing has no ``times=``, so the layer raises</span>
+<span class="sd">``UnsupportedFeature`` naming the argument. The script shows that error once, then does the same</span>
+<span class="sd">job with a handler that mocks the first request and lets the later ones through.</span>
 
 <span class="sd">Author: Pandiyaraj Karuppasamy</span>
 <span class="sd">Date: Nov-07-2026</span>
+<span class="sd">Modified: Nov-07-2026 (evaluate_handle is supported now: the exercise uses route(times=) instead)</span>
 <span class="sd">"""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">steero.compat.playwright</span><span class="w"> </span><span class="kn">import</span> <span class="n">UnsupportedFeature</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">steero.compat.playwright.sync_api</span><span class="w"> </span><span class="kn">import</span> <span class="n">expect</span><span class="p">,</span> <span class="n">sync_playwright</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">steero.compat.playwright.sync_api</span><span class="w"> </span><span class="kn">import</span> <span class="n">Route</span><span class="p">,</span> <span class="n">expect</span><span class="p">,</span> <span class="n">sync_playwright</span>
 
 <span class="n">BASE_URL</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"STEERO_COURSE_URL"</span><span class="p">,</span> <span class="s2">"http://127.0.0.1:8765/"</span><span class="p">)</span>
 <span class="n">BROWSER</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"STEERO_COURSE_BROWSER"</span><span class="p">,</span> <span class="s2">"chrome"</span><span class="p">)</span>
 <span class="n">HEADLESS</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"STEERO_COURSE_HEADED"</span><span class="p">)</span> <span class="o">!=</span> <span class="s2">"1"</span>
+
+<span class="n">MOCKED</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">"id"</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"Mocked mug"</span><span class="p">,</span> <span class="s2">"price"</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s2">"stock"</span><span class="p">:</span> <span class="mi">5</span><span class="p">}]</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -1587,34 +1592,46 @@ replace it with something steero supports.</p>
         <span class="n">channel</span> <span class="o">=</span> <span class="s2">"msedge"</span> <span class="k">if</span> <span class="n">BROWSER</span> <span class="o">==</span> <span class="s2">"edge"</span> <span class="k">else</span> <span class="kc">None</span>
         <span class="n">browser</span> <span class="o">=</span> <span class="n">browser_type</span><span class="o">.</span><span class="n">launch</span><span class="p">(</span><span class="n">headless</span><span class="o">=</span><span class="n">HEADLESS</span><span class="p">,</span> <span class="n">channel</span><span class="o">=</span><span class="n">channel</span><span class="p">)</span>
         <span class="n">page</span> <span class="o">=</span> <span class="n">browser</span><span class="o">.</span><span class="n">new_page</span><span class="p">()</span>
-        <span class="n">page</span><span class="o">.</span><span class="n">goto</span><span class="p">(</span><span class="n">BASE_URL</span> <span class="o">+</span> <span class="s2">"login.html"</span><span class="p">)</span>
-        <span class="n">page</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="s2">"#username"</span><span class="p">,</span> <span class="s2">"ada"</span><span class="p">)</span>
-        <span class="n">page</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="s2">"#password"</span><span class="p">,</span> <span class="s2">"lovelace"</span><span class="p">)</span>
-        <span class="n">page</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s2">"#sign-in"</span><span class="p">)</span>
-        <span class="n">expect</span><span class="p">(</span><span class="n">page</span><span class="o">.</span><span class="n">locator</span><span class="p">(</span><span class="s2">"#status"</span><span class="p">))</span><span class="o">.</span><span class="n">to_have_text</span><span class="p">(</span><span class="s2">"Welcome, ada"</span><span class="p">)</span>
+        <span class="n">page</span><span class="o">.</span><span class="n">goto</span><span class="p">(</span><span class="n">BASE_URL</span> <span class="o">+</span> <span class="s2">"products.html"</span><span class="p">)</span>
+        <span class="n">expect</span><span class="p">(</span><span class="n">page</span><span class="o">.</span><span class="n">get_by_role</span><span class="p">(</span><span class="s2">"status"</span><span class="p">))</span><span class="o">.</span><span class="n">to_have_text</span><span class="p">(</span><span class="s2">"3 products"</span><span class="p">)</span>  <span class="c1"># the page's own request is done</span>
 
         <span class="k">try</span><span class="p">:</span>  <span class="c1"># the original line</span>
-            <span class="n">handle</span> <span class="o">=</span> <span class="n">page</span><span class="o">.</span><span class="n">evaluate_handle</span><span class="p">(</span><span class="s2">"document.getElementById('status')"</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">handle</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="s2">"el =&gt; el.textContent"</span><span class="p">))</span>
+            <span class="n">page</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">"**/api/products"</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">route</span><span class="p">:</span> <span class="n">route</span><span class="o">.</span><span class="n">fulfill</span><span class="p">(</span><span class="n">json</span><span class="o">=</span><span class="n">MOCKED</span><span class="p">),</span> <span class="n">times</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
         <span class="k">except</span> <span class="n">UnsupportedFeature</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">"Unsupported:"</span><span class="p">,</span> <span class="n">error</span><span class="o">.</span><span class="n">feature</span><span class="p">)</span>
 
-        <span class="c1"># The replacement: a locator does what the handle did, and auto-waits as well.</span>
-        <span class="n">text</span> <span class="o">=</span> <span class="n">page</span><span class="o">.</span><span class="n">locator</span><span class="p">(</span><span class="s2">"#status"</span><span class="p">)</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="s2">"el =&gt; el.textContent"</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">"Status:"</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
-        <span class="k">assert</span> <span class="n">text</span> <span class="o">==</span> <span class="s2">"Welcome, ada"</span>
+        <span class="c1"># The replacement: mock the first request, then let every later one reach the server.</span>
+        <span class="n">mocked</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">first_only</span><span class="p">(</span><span class="n">route</span><span class="p">:</span> <span class="n">Route</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">mocked</span><span class="p">:</span>
+                <span class="n">route</span><span class="o">.</span><span class="n">continue_</span><span class="p">()</span>
+                <span class="k">return</span>
+            <span class="n">mocked</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">route</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
+            <span class="n">route</span><span class="o">.</span><span class="n">fulfill</span><span class="p">(</span><span class="n">json</span><span class="o">=</span><span class="n">MOCKED</span><span class="p">)</span>
+
+        <span class="n">page</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">"**/api/products"</span><span class="p">,</span> <span class="n">first_only</span><span class="p">)</span>
+        <span class="n">page</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s2">"#reload"</span><span class="p">)</span>
+        <span class="n">expect</span><span class="p">(</span><span class="n">page</span><span class="o">.</span><span class="n">get_by_role</span><span class="p">(</span><span class="s2">"status"</span><span class="p">))</span><span class="o">.</span><span class="n">to_have_text</span><span class="p">(</span><span class="s2">"1 products"</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"First reload:"</span><span class="p">,</span> <span class="n">page</span><span class="o">.</span><span class="n">text_content</span><span class="p">(</span><span class="s2">"tbody td"</span><span class="p">))</span>
+        <span class="n">page</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s2">"#reload"</span><span class="p">)</span>
+        <span class="n">expect</span><span class="p">(</span><span class="n">page</span><span class="o">.</span><span class="n">get_by_role</span><span class="p">(</span><span class="s2">"status"</span><span class="p">))</span><span class="o">.</span><span class="n">to_have_text</span><span class="p">(</span><span class="s2">"3 products"</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"Second reload:"</span><span class="p">,</span> <span class="n">page</span><span class="o">.</span><span class="n">text_content</span><span class="p">(</span><span class="s2">"tbody td"</span><span class="p">))</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">mocked</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
         <span class="n">browser</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
     <span class="n">main</span><span class="p">()</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code>Unsupported: Page.evaluate_handle
-Status: Welcome, ada
+<div class="highlight"><pre><span></span><code>Unsupported: Page.route(times=...)
+First reload: Mocked mug
+Second reload: Blue mug
 </code></pre></div>
-<p>A JS handle is a reference to an object living in the page. A locator is a description that
-finds the element again, and <code>locator.evaluate()</code> runs the same function on it. The solution
-catches the error only to show its <code>feature</code>; in your own port, just change the line.</p>
+<p>steero's routing has no <code>times=</code>, so the layer refuses the argument rather than mocking every
+request. A handler that keeps its own count does the same job: it fulfills the first request
+and lets the later ones through with <code>route.continue_()</code>. The solution catches the error only
+to show its <code>feature</code>; in your own port, just change the line.</p>
 </details>
 <h3 id="exercise-3-native-in-seconds">Exercise 3: native, in seconds<a class="headerlink" href="#exercise-3-native-in-seconds" title="Permanent link">&para;</a></h3>
 <p>Rewrite this compatibility-layer script to native steero. Convert every timeout to seconds, use
@@ -1672,7 +1689,8 @@ steero's <code>wait_until</code> value, and replace the selector shortcuts with 
 </code></pre></div>
 <p>Each converted line keeps the old value in a comment, which makes a migration review quick.
 <code>wait_for_selector</code> becomes <code>locator(...).first.wait_for()</code>: it waits for the first row to be
-visible, and returns nothing, because there is no handle to return.</p>
+visible. Native <code>page.wait_for_selector()</code> would also work; it returns a locator, where the
+layer returns an element handle.</p>
 </details>
 <h2 id="common-mistakes">Common mistakes<a class="headerlink" href="#common-mistakes" title="Permanent link">&para;</a></h2>
 <div class="admonition warning">

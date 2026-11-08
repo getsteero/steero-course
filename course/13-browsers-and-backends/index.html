@@ -1107,7 +1107,7 @@
 
 <!-- STATUS: written, owner: writer D -->
 <h1 id="13-browsers-and-backends">13. Browsers and backends<a class="headerlink" href="#13-browsers-and-backends" title="Permanent link">&para;</a></h1>
-<!-- Author: Pandiyaraj Karuppasamy | Date: Nov-07-2026 | Modified: Nov-07-2026 (channel mismatch message) -->
+<!-- Author: Pandiyaraj Karuppasamy | Date: Nov-07-2026 | Modified: Nov-07-2026 (channel mismatch message); Nov-07-2026 (Chrome video from the CDP screencast) -->
 
 <div class="admonition abstract">
 <p class="admonition-title">In this lesson</p>
@@ -1316,8 +1316,8 @@ fresh profile and connects to it directly. Three differences are worth knowing.<
 the option; steero never falls back to something that only looks right. Lesson 06 and the
 emulation guide have the table.</p>
 <p><strong>Video.</strong> Firefox records video itself (<code>browsingContext.startScreencast</code>) and writes a <code>.webm</code>.
-Chrome has no BiDi screencast yet, so steero captures frames and encodes them with ffmpeg when
-it is installed (lesson 10).</p>
+Chrome has no BiDi screencast yet, so steero captures frames from the CDP screencast and encodes
+them with ffmpeg when it is installed (lesson 10).</p>
 <h2 id="worked-example">Worked example<a class="headerlink" href="#worked-example" title="Permanent link">&para;</a></h2>
 <p>The script below opens the products page in whatever browser the course runs. In Chrome or Edge
 it also starts JavaScript coverage before the page loads, then prints a few metrics; in Firefox
