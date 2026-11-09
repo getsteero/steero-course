@@ -2,74 +2,74 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://getsteero.github.io/steero-course/course/</loc>
-         <lastmod>2026-11-08</lastmod>
+         <lastmod>2026-11-09</lastmod>
     </url>
     <url>
          <loc>https://getsteero.github.io/steero-course/course/01-getting-started/</loc>
-         <lastmod>2026-11-08</lastmod>
+         <lastmod>2026-11-09</lastmod>
     </url>
     <url>
          <loc>https://getsteero.github.io/steero-course/course/02-locators/</loc>
-         <lastmod>2026-11-08</lastmod>
+         <lastmod>2026-11-09</lastmod>
     </url>
     <url>
          <loc>https://getsteero.github.io/steero-course/course/03-actions-and-auto-waiting/</loc>
-         <lastmod>2026-11-08</lastmod>
+         <lastmod>2026-11-09</lastmod>
     </url>
     <url>
          <loc>https://getsteero.github.io/steero-course/course/04-assertions/</loc>
-         <lastmod>2026-11-08</lastmod>
+         <lastmod>2026-11-09</lastmod>
     </url>
     <url>
          <loc>https://getsteero.github.io/steero-course/course/05-visual-testing/</loc>
-         <lastmod>2026-11-08</lastmod>
+         <lastmod>2026-11-09</lastmod>
     </url>
     <url>
          <loc>https://getsteero.github.io/steero-course/course/06-contexts-and-emulation/</loc>
-         <lastmod>2026-11-08</lastmod>
+         <lastmod>2026-11-09</lastmod>
     </url>
     <url>
          <loc>https://getsteero.github.io/steero-course/course/07-network/</loc>
-         <lastmod>2026-11-08</lastmod>
+         <lastmod>2026-11-09</lastmod>
     </url>
     <url>
          <loc>https://getsteero.github.io/steero-course/course/08-events-dialogs-downloads/</loc>
-         <lastmod>2026-11-08</lastmod>
+         <lastmod>2026-11-09</lastmod>
     </url>
     <url>
          <loc>https://getsteero.github.io/steero-course/course/09-pytest-plugin/</loc>
-         <lastmod>2026-11-08</lastmod>
+         <lastmod>2026-11-09</lastmod>
     </url>
     <url>
          <loc>https://getsteero.github.io/steero-course/course/10-debugging/</loc>
-         <lastmod>2026-11-08</lastmod>
+         <lastmod>2026-11-09</lastmod>
     </url>
     <url>
          <loc>https://getsteero.github.io/steero-course/course/11-codegen/</loc>
-         <lastmod>2026-11-08</lastmod>
+         <lastmod>2026-11-09</lastmod>
     </url>
     <url>
          <loc>https://getsteero.github.io/steero-course/course/12-self-healing/</loc>
-         <lastmod>2026-11-08</lastmod>
+         <lastmod>2026-11-09</lastmod>
     </url>
     <url>
          <loc>https://getsteero.github.io/steero-course/course/13-browsers-and-backends/</loc>
-         <lastmod>2026-11-08</lastmod>
+         <lastmod>2026-11-09</lastmod>
     </url>
     <url>
          <loc>https://getsteero.github.io/steero-course/course/14-mcp-agents/</loc>
-         <lastmod>2026-11-08</lastmod>
+         <lastmod>2026-11-09</lastmod>
     </url>
     <url>
          <loc>https://getsteero.github.io/steero-course/course/15-migrating-from-playwright/</loc>
-         <lastmod>2026-11-08</lastmod>
+         <lastmod>2026-11-09</lastmod>
     </url>
     <url>
          <loc>https://getsteero.github.io/steero-course/course/16-capstone/</loc>
-         <lastmod>2026-11-08</lastmod>
+         <lastmod>2026-11-09</lastmod>
     </url>
     <url>
          <loc>https://getsteero.github.io/steero-course/course/conventions/</loc>
-         <lastmod>2026-11-08</lastmod>
+         <lastmod>2026-11-09</lastmod>
     </url>
 </urlset>

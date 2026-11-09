@@ -1173,7 +1173,7 @@
 
 <!-- STATUS: written, owner: writer B -->
 <h1 id="07-network">07. Network<a class="headerlink" href="#07-network" title="Permanent link">&para;</a></h1>
-<!-- Author: Pandiyaraj Karuppasamy | Date: Nov-07-2026 | Modified: Nov-07-2026 (401 without credentials shows the page; library fixes from the course bug list) -->
+<!-- Author: Pandiyaraj Karuppasamy | Date: Nov-07-2026 | Modified: Nov-07-2026 (401 without credentials shows the page; library fixes from the course bug list); Nov-09-2026 (expect_response predicate and new-requests-only rule) -->
 
 <div class="admonition abstract">
 <p class="admonition-title">In this lesson</p>
@@ -1222,6 +1222,10 @@ character, and <code>{a,b}</code> either alternative. You can also pass a compil
 (<code>re.compile(r"/api/products$")</code>) or a function that takes the URL and returns <code>True</code> or
 <code>False</code>. The same patterns work everywhere in this lesson. <code>expect_request</code> is the same for
 requests.</p>
+<p>To check more than the URL, add <code>predicate=</code>, a function that takes the <code>Response</code>:
+<code>page.expect_response("**/api/products", predicate=lambda r: r.ok)</code>. And <code>expect_response</code> only
+counts responses to requests that start after the <code>with</code> block begins, so a response from earlier
+(such as a mocked one you just removed with <code>unroute_all()</code>) never satisfies it.</p>
 <div class="admonition tip">
 <p class="admonition-title">Coming from Playwright</p>
 <p><code>page.goto()</code> returns the main document's <code>Response</code>, as in Playwright (<code>None</code> for

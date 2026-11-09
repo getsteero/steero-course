@@ -1151,7 +1151,7 @@
 
 <!-- STATUS: written, owner: writer A -->
 <h1 id="02-locators">02. Locators<a class="headerlink" href="#02-locators" title="Permanent link">&para;</a></h1>
-<!-- Author: Pandiyaraj Karuppasamy | Date: Nov-07-2026 | Modified: Nov-07-2026 (library fixes from the course bug list) -->
+<!-- Author: Pandiyaraj Karuppasamy | Date: Nov-07-2026 | Modified: Nov-07-2026 (library fixes from the course bug list); Nov-09-2026 (scoped shadow hosts, slotted names, selector lists) -->
 
 <div class="admonition abstract">
 <p class="admonition-title">In this lesson</p>
@@ -1382,6 +1382,11 @@ queries search open shadow roots for you, however deeply they nest. On <code>/te
 the Follow button is two shadow roots deep, and this simply works:</p>
 <div class="highlight"><pre><span></span><code><span class="n">page</span><span class="o">.</span><span class="n">get_by_role</span><span class="p">(</span><span class="s2">"button"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"Follow"</span><span class="p">)</span><span class="o">.</span><span class="n">click</span><span class="p">()</span>
 </code></pre></div>
+<p>Scoping works the same way: <code>page.locator("my-card").locator("button")</code> finds buttons inside
+<code>my-card</code>'s own shadow root as well as its light DOM children. Text projected through a <code>&lt;slot&gt;</code>
+counts toward an element's accessible name, so a shadow button labelled by slotted text is found by
+<code>get_by_role("button", name=...)</code>. CSS selector lists such as <code>page.locator("b, strong")</code> return
+every match once, in document order, including matches inside shadow roots.</p>
 <p>(Closed shadow roots are closed to every tool by design; nothing can reach into them.)</p>
 <p><strong>Iframes must be entered.</strong> An iframe holds a separate document, so a locator built from the
 page does not look inside it. <code>frame_locator(selector)</code> names the iframe, and locators built from
