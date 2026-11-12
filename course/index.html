@@ -296,6 +296,50 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#what-steero-is" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What steero is
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-steero-exists" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why steero exists
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#steero-selenium-and-playwright-side-by-side" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        steero, Selenium and Playwright side by side
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-use-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why use it
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#who-it-is-for" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -855,6 +899,50 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#what-steero-is" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What steero is
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-steero-exists" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why steero exists
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#steero-selenium-and-playwright-side-by-side" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        steero, Selenium and Playwright side by side
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-use-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why use it
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#who-it-is-for" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -938,11 +1026,160 @@
 
 
 <h1 id="learn-steero">Learn steero<a class="headerlink" href="#learn-steero" title="Permanent link">&para;</a></h1>
-<!-- Author: Pandiyaraj Karuppasamy | Date: Nov-07-2026 -->
+<!-- Author: Pandiyaraj Karuppasamy | Date: Nov-07-2026 | Modified: Nov-13-2026 (what steero is and why) -->
 
 <p>A hands-on course in sixteen lessons, from your first script to a full test suite. Each lesson
 teaches one part of steero, runs real code against a practice site on your own machine, and
 ends with exercises you can check yourself.</p>
+<h2 id="what-steero-is">What steero is<a class="headerlink" href="#what-steero-is" title="Permanent link">&para;</a></h2>
+<p>steero is a Python library that drives a real web browser for you. Your code opens Chrome,
+Edge or Firefox, goes to a page, clicks, types, fills forms and checks what the page shows,
+the same things a person does, only faster and the same way every time.</p>
+<p>You use it for three kinds of work:</p>
+<ul>
+<li><strong>Testing a web app.</strong> End-to-end tests that log in, place an order and check the result,
+  run with pytest on your machine or in your pipeline.</li>
+<li><strong>Checking a page before a release.</strong> Does it load, are there console errors, does it still
+  look the same as yesterday?</li>
+<li><strong>Automating a chore.</strong> Downloading a report every morning, filling the same form fifty times.</li>
+</ul>
+<p>It also lets an AI assistant (Claude, Cursor and others) drive the browser through its MCP
+server, so you can ask the assistant to "open the app and check the sign-in page".</p>
+<h2 id="why-steero-exists">Why steero exists<a class="headerlink" href="#why-steero-exists" title="Permanent link">&para;</a></h2>
+<p>Browser automation has had two main choices, and each makes you pay for something:</p>
+<ul>
+<li><strong>Selenium</strong> talks to the browser over the classic WebDriver protocol. It is a standard and
+  works everywhere, but the protocol only asks and answers: it cannot tell your script when
+  something happens on the page. So you write waits and sleeps by hand, and tests become slow
+  and flaky.</li>
+<li><strong>Playwright</strong> fixed the waiting and the speed, but to do it the project downloads its own
+  builds of the browsers, and drives Firefox and WebKit through patched copies. What you test
+  is not quite the browser your users have, and every upgrade brings a new set of downloads.</li>
+</ul>
+<p>The browser makers have since agreed on a new standard, <strong>WebDriver BiDi</strong>. It is two-way: the
+browser tells your script about page loads, console messages, network requests and dialogs as
+they happen. Chrome, Edge and Firefox all ship it in their normal releases.</p>
+<p>steero is built on that standard and nothing else. That gives it:</p>
+<ul>
+<li><strong>Your own browsers.</strong> It drives the Chrome and Firefox already installed, the ones your
+  users run. No patched builds, no browser downloads.</li>
+<li><strong>Auto-waiting.</strong> Every click and type waits until the element is really ready (attached,
+  visible, still, enabled, not covered), and when it gives up it tells you which check failed.
+  You do not write sleeps.</li>
+<li><strong>One code path for every browser.</strong> The same protocol drives Chrome and Firefox, so a test
+  that passes on one is testing the same thing on the other.</li>
+<li><strong>Nothing left behind.</strong> Every run shuts down its browser processes and profile folders,
+  even when a test crashes.</li>
+</ul>
+<h2 id="steero-selenium-and-playwright-side-by-side">steero, Selenium and Playwright side by side<a class="headerlink" href="#steero-selenium-and-playwright-side-by-side" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Selenium</th>
+<th>Playwright</th>
+<th>steero</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Protocol</td>
+<td>Classic WebDriver (ask and answer)</td>
+<td>Its own protocol over CDP and patched browsers</td>
+<td>WebDriver BiDi, the W3C standard</td>
+</tr>
+<tr>
+<td>Browsers it drives</td>
+<td>Stock Chrome, Edge, Firefox, Safari</td>
+<td>Its own downloaded Chromium, Firefox and WebKit builds (stock Chrome and Edge as channels)</td>
+<td>Stock Chrome, Edge and Firefox already on your machine</td>
+</tr>
+<tr>
+<td>Extra downloads</td>
+<td>A driver per browser (Selenium Manager fetches them)</td>
+<td>Several hundred MB of browser builds, per version</td>
+<td>None for Firefox; chromedriver for Chrome, or none with <code>backend="chromium-bidi"</code></td>
+</tr>
+<tr>
+<td>Waiting for elements</td>
+<td>You write explicit waits</td>
+<td>Built in</td>
+<td>Built in, and the error names the check that failed</td>
+</tr>
+<tr>
+<td>Events (console, network, dialogs)</td>
+<td>Limited; BiDi support is being added</td>
+<td>Yes</td>
+<td>Yes, from the standard protocol</td>
+</tr>
+<tr>
+<td>Network mocking</td>
+<td>Not in the core API</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Python API</td>
+<td>Sync only</td>
+<td>Sync and async</td>
+<td>Sync and async, fully typed (<code>mypy --strict</code>)</td>
+</tr>
+<tr>
+<td>pytest</td>
+<td>Third-party plugins</td>
+<td><code>pytest-playwright</code></td>
+<td>Built-in plugin: fixtures, failure screenshots, traces</td>
+</tr>
+<tr>
+<td>Tracing, recorder, visual compare</td>
+<td>Not built in</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Self-healing locators</td>
+<td>No</td>
+<td>No</td>
+<td>Yes, deterministic and reported</td>
+</tr>
+<tr>
+<td>AI assistant support</td>
+<td>No</td>
+<td>MCP server (separate package)</td>
+<td>MCP server, plus skills and rules installed by <code>steero init</code></td>
+</tr>
+<tr>
+<td>Safari</td>
+<td>Yes</td>
+<td>WebKit build, not Safari itself</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Maturity</td>
+<td>Around 20 years, huge community</td>
+<td>Widely used since 2020</td>
+<td>New (1.0 release candidates)</td>
+</tr>
+</tbody>
+</table>
+<p>In short: choose Selenium when you need Safari or a large existing grid, Playwright when you
+want its mature ecosystem and are happy with its browser builds, and steero when you want
+Playwright-style ease on the real, stock browsers through a standard protocol, from Python.</p>
+<h2 id="why-use-it">Why use it<a class="headerlink" href="#why-use-it" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Fewer flaky tests.</strong> Waiting is built in and based on what the page actually does.</li>
+<li><strong>Tests that match production.</strong> You test the browser versions your users have.</li>
+<li><strong>Plain Python.</strong> A typed API (sync or async), a pytest plugin with fixtures, failure
+  screenshots, traces you can replay, and a recorder that writes the first draft of a test.</li>
+<li><strong>Easy to move to.</strong> Playwright scripts run on steero by changing one import, and
+  <a href="15-migrating-from-playwright/">lesson 15</a> shows the way from there.</li>
+<li><strong>Ready for AI assistants.</strong> <code>steero init</code> sets up a project with skills and rules for
+  Claude Code and Cursor, and <code>steero mcp</code> lets an assistant drive the browser itself.</li>
+<li><strong>Small and open.</strong> MIT licensed, one runtime dependency, and a standard protocol
+  underneath, so you are not tied to one vendor's tooling.</li>
+</ul>
+<p>Where it is not the right tool: steero drives Chrome, Edge and Firefox. If you must test
+Safari, use another tool for that part.</p>
 <h2 id="who-it-is-for">Who it is for<a class="headerlink" href="#who-it-is-for" title="Permanent link">&para;</a></h2>
 <p>Python testers and developers who want to automate Chrome and Firefox: writing end-to-end
 tests, checking pages before a release, or scripting a browser for a chore. You do not need to
