@@ -1085,7 +1085,7 @@
 
 <!-- STATUS: written, owner: writer D -->
 <h1 id="14-ai-agents-with-mcp">14. AI agents with MCP<a class="headerlink" href="#14-ai-agents-with-mcp" title="Permanent link">&para;</a></h1>
-<!-- Author: Pandiyaraj Karuppasamy | Date: Nov-07-2026 | Modified: Nov-07-2026 (edge; checkbox state in the snapshot) -->
+<!-- Author: Pandiyaraj Karuppasamy | Date: Nov-07-2026 | Modified: Nov-07-2026 (edge; checkbox state in the snapshot); Nov-12-2026 (upload, dialog, drag, network, storage state, frames, downloads tools) -->
 
 <div class="admonition abstract">
 <p class="admonition-title">In this lesson</p>
@@ -1220,6 +1220,34 @@ all three.</p>
 <tr>
 <td><code>browser_tabs</code>, <code>browser_navigate_back</code>, <code>browser_close</code></td>
 <td>tabs, history, and closing the browser</td>
+</tr>
+<tr>
+<td><code>browser_file_upload</code></td>
+<td>choose files for a file input (only files inside the server's files folder)</td>
+</tr>
+<tr>
+<td><code>browser_handle_dialog</code></td>
+<td>accept or dismiss the next alert, confirm or prompt; call it before the click</td>
+</tr>
+<tr>
+<td><code>browser_drag</code></td>
+<td>drag one element onto another</td>
+</tr>
+<tr>
+<td><code>browser_network_requests</code></td>
+<td>the requests made since the last call (<code>errors_only</code> for 4xx, 5xx and failures)</td>
+</tr>
+<tr>
+<td><code>browser_storage_state</code></td>
+<td>save cookies and localStorage (a login) to a file in the files folder</td>
+</tr>
+<tr>
+<td><code>browser_frames</code></td>
+<td>list the frames; pass <code>frame</code> to <code>browser_snapshot</code> and the element tools to work in an iframe</td>
+</tr>
+<tr>
+<td><code>browser_downloads</code></td>
+<td>list downloads, or save one into the files folder</td>
 </tr>
 </tbody>
 </table>
