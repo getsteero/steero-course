@@ -1,5 +1,8 @@
 # steero course
 
+> **Moved.** steero is now **kaprevo**. The course lives at
+> https://kaprevo.github.io/kaprevo-course/ and this repository is archived.
+
 > **Disclaimer.** This course is provided **AS IS**, without warranty of any kind,
 > express or implied. **Use it entirely at your own risk.** It teaches browser
 > automation, and scripts you write can act on any site you point them at. The
